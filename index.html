@@ -1,14 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Upload Social Media Data</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f7f9;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 24px;
+    }
+
+    input[type="file"] {
+      margin: 20px 0;
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
 </head>
 <body>
-  <h2>Upload Your Data File</h2>
-  <form id="uploadForm">
-    <input type="file" id="fileInput" name="file" required />
-    <button type="submit">Upload</button>
-  </form>
+  <div class="container">
+    <h2>Upload Your Social Media Data</h2>
+    <form id="uploadForm">
+      <input type="file" id="fileInput" name="file" required />
+      <br>
+      <button type="submit">Upload</button>
+    </form>
+    <div class="message" id="statusMessage"></div>
+  </div>
 
   <script>
     document.getElementById("uploadForm").addEventListener("submit", async function (e) {
@@ -18,7 +85,8 @@
       const formData = new FormData();
       formData.append("file", file);
 
-      const webhookUrl = "https://hook.eu2.make.com/6u7pxvs8yinedhcv6r8f96icoedt9lv8"; // Replace with your actual webhook URL
+      const statusMessage = document.getElementById("statusMessage");
+      const webhookUrl = "https://hook.eu2.make.com/6u7pxvs8yinedhcv6r8f96icoedt9lv8"; // Your webhook
 
       try {
         const response = await fetch(webhookUrl, {
@@ -27,12 +95,15 @@
         });
 
         if (response.ok) {
-          alert("File uploaded successfully!");
+          statusMessage.textContent = "✅ File uploaded successfully!";
+          statusMessage.className = "message success";
         } else {
-          alert("Upload failed.");
+          statusMessage.textContent = "❌ Upload failed. Please try again.";
+          statusMessage.className = "message error";
         }
       } catch (error) {
-        alert("An error occurred: " + error);
+        statusMessage.textContent = "❌ An error occurred: " + error;
+        statusMessage.className = "message error";
       }
     });
   </script>
