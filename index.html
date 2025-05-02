@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Social Media Data</title>
+</head>
+<body>
+  <h2>Upload Your Data File</h2>
+  <form id="uploadForm">
+    <input type="file" id="fileInput" name="file" required />
+    <button type="submit">Upload</button>
+  </form>
+
+  <script>
+    document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const webhookUrl = "https://hook.eu2.make.com/6uc19ab1cmzmv7kw85xfuu2hxt49wjfu"; // Replace with your actual webhook URL
+
+      try {
+        const response = await fetch(webhookUrl, {
+          method: "POST",
+          body: formData
+        });
+
+        if (response.ok) {
+          alert("File uploaded successfully!");
+        } else {
+          alert("Upload failed.");
+        }
+      } catch (error) {
+        alert("An error occurred: " + error);
+      }
+    });
+  </script>
+</body>
+</html>
